@@ -1,5 +1,4 @@
 import random as rand
-import time
 from Player import Player
 from Items import Items
 from position import position
@@ -18,31 +17,18 @@ def main():
 
     antal_potions = 3
     print(f"\nHej {player.name}! Välkomen till denna spännande äventyr.")
-
     while True:
 
         svar = input(
             "\nVad vill du göra: titta i inventory [I], titta på statusen [S], gå igenom dörren framför dig [F], gå igenom dörren till höger [H] eller gå igenom dörren till vänster [V], eller ta en potion [P] → ")
         if svar.lower() == "s":
             print(
-                f"\nDin status just nu ser ut så här → \n \t* HP: {player.hp} \n \t* Styrka: {sum(player.strength)} \n \t* Nivå: {player.level} \n \t* Antal potions: {antal_potions}\n")
+                f"\nDin status just nu ser ut så här → \n \n \t* HP: {player.hp} \n \t* Styrka: {sum(player.strength)} \n \t* Nivå: {player.level} \n \t* Antal potions: {antal_potions}\n")
 
         elif svar.lower() == "i":
-            if len(player.inventory) == 1:
-                print(
-                    f"\nDin väska innehåller följande verktyg: \n \t* {player.inventory[0], player.strength[0]}")
-            elif len(player.inventory) == 2:
-                print(
-                    f"\nDin väska innehåller följande verktyg: \n \t* {player.inventory[0], player.strength[0]} \n \t* {player.inventory[1], player.strength[1]}")
-            elif len(player.inventory) == 3:
-                print(
-                    f"\nDin väska innehåller följande verktyg: \n \t* {player.inventory[0], player.strength[0]} \n \t* {player.inventory[1], player.strength[1]} \n \t* {player.inventory[2], player.strength[2]}")
-            elif len(player.inventory) == 4:
-                print(
-                    f"\nDin väska innehåller följande verktyg: \n \t* {player.inventory[0], player.strength[0]} \n \t* {player.inventory[1], player.strength[1]} \n \t* {player.inventory[2], player.strength[2]} \n \t* {player.inventory[3], player.strength[3]}")
-            else:
-                print(
-                    f"\nDin väska innehåller följande verktyg: \n \t* {player.inventory[0], player.strength[0]} \n \t* {player.inventory[1], player.strength[1]} \n \t* {player.inventory[2], player.strength[2]} \n \t* {player.inventory[3], player.strength[3]} \n \t* {player.inventory[4], player.strength[4]} ")
+            print("\nDin väska innehåller följande verktyg:\n")
+            for i in range(len(player.inventory)):
+                print(f"\t* {player.inventory[i]}: {player.strength[i]} str")
 
         elif svar.lower() == "p":
             player.hp, antal_potions = ta_potion(player.hp, antal_potions)
@@ -64,14 +50,8 @@ def main():
                         player.new_hp(player.hp-monster_skada)
                     else:
                         print(
-                            "Monstern har besegrad dig och gjort att din hp gick ner till 0. Du har förlurat spelet.\n")
-                        time.sleep(1.5)
-                        spela_igen = input(
-                            "Vill du spela igen: ja [j] annars ange vilken knapp som helst → ")
-                        if spela_igen.lower() == "j":
-                            main()
-                        else:
-                            break
+                            "\nMonstern har besegrad dig och gjort att din hp gick ner till 0. Du har förlurat spelet.\n")
+                        break
 
                 elif monster_styrka < sum(player.strength):
                     print(
@@ -84,14 +64,7 @@ def main():
                     if player.level == 10:
                         print(
                             f"Grattis {player.name}! Du har nått nivå 10 vilket betyder att du har vunnit.\n")
-                        time.sleep(1.5)
-                        spela_igen = input(
-                            "Vill du spela igen ja [j] annars ange vilken knapp som helst → ")
-                        if spela_igen.lower() == "j":
-                            main()
-                        else:
-                            break
-
+                        break
                 else:
                     print(
                         "\nDu träffade en monster med samma styrka som dig. Inget hände.")
@@ -103,11 +76,14 @@ def main():
                     f"\nBakomen denna dörr finns en kista med verktyg som du kan använda i vidare strider. Den kista innehåller ett verktyg med namnet: {namn_pa_verktyg} och styrkan: {styrka}")
 
                 if len(player.strength) == 5:
+                    print("\nDina verktyg med deras styrkor:\n")
+                    for i in range(5):
+                        print(f"{player.inventory[i]}: {player.strength[i]}")
                     print("\nDin inventory är full du kan inte lägga till verktyget.\n")
-
                     while True:
                         byta = input(
-                            f"Vill du byta en av dina verktyg mot den? ja [J] eller nej [N]. Dina verktyg har följande styrka: {player.strength} → ")
+                            f"Vill du byta en av dina verktyg mot den? ja [J] eller nej [N]. Dina verktyg har följande styrkor: → ")
+
                         if byta.lower() == "j":
                             verktygets_position = position()
                             player.strength.pop(verktygets_position)
@@ -142,13 +118,7 @@ def main():
                 else:
                     print(
                         "\nDu stöt på en fälla som gjort att din HP gick ner till 0. Du har förlurat spelet.\n")
-                    time.sleep(1.5)
-                    spela_igen = input(
-                        "Vill du spela igen ja [j] annars ange vilken knapp som helst → ")
-                    if spela_igen.lower() == "j":
-                        main()
-                    else:
-                        break
+                    break
 
         else:
             print("\nFelaktig val")
